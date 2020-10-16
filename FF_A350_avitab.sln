@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FF_A350_avitab", "FF_A350_avitab.vcxproj", "{4FF206C2-9130-478A-AB14-F7F7DBD19930}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4FF206C2-9130-478A-AB14-F7F7DBD19930}.Debug|x64.ActiveCfg = Debug|x64
+		{4FF206C2-9130-478A-AB14-F7F7DBD19930}.Debug|x64.Build.0 = Debug|x64
+		{4FF206C2-9130-478A-AB14-F7F7DBD19930}.Release|x64.ActiveCfg = Release|x64
+		{4FF206C2-9130-478A-AB14-F7F7DBD19930}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {76C3606F-F27A-46C2-AE55-782751EAF43C}
+	EndGlobalSection
+EndGlobal
