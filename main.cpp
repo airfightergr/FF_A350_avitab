@@ -1,8 +1,9 @@
 
-// Add a noise to temperature sensor as a new Dataref
-//Based on Xplane SDK Sample Codes
-//Published by Alireza Ghaderi p30planets@gmail.com
-
+/* ************************************************
+ITX-D Avitab integration for FF A350
+Ilias Tselios
+version 1.0
+************************************************ */
  
  #define XPLM300 = 1;  // This example requires SDK3.0
  
@@ -21,44 +22,38 @@
 static XPLMDataRef avitab_enable = NULL;				// avitab is enabled?
 static XPLMDataRef avitab_pos_left = NULL;				// avitab left pos
 static XPLMDataRef avitab_pos_bottom = NULL;			// avitab bottom pos
-static XPLMDataRef avitab_width = NULL;				// avitab width
+static XPLMDataRef avitab_width = NULL;					// avitab width
 static XPLMDataRef avitab_height = NULL;				// avitab height
 
 //FF A350 OIS datarefs init
-static XPLMDataRef ois_page = NULL;					// OIS page number
-static XPLMDataRef ois_position = NULL;				// OIS position
+static XPLMDataRef ois_page = NULL;						// OIS page number
+static XPLMDataRef ois_position = NULL;					// OIS position
 static XPLMDataRef ois_cursor = NULL;					// OIS cursor type
-static XPLMDataRef dummyDisplay = NULL;				// Is dummy display on?
+static XPLMDataRef dummyDisplay = NULL;					// Is dummy display on?
 
 //X-Plane's dataref
 static XPLMDataRef busVolts1 = NULL;					// OIS cursor type
  
+	 int enabled;
+	 int cursor;
+	 float left_side;
+	 float bottom_side;
  
-float  AvitabControl(float elapsedMe, float elapsedSim, int counter, void * refcon);  //  Declare callback to register dataref 
+	 float  MyFlightLoopCallBack(						//our flight loop callback
+		 float elapsedMe,
+		 float elapsedSim,
+		 int counter,
+		 void* refcon);
 
  PLUGIN_API int XPluginStart(
 	 char *        outName,
 	 char *        outSig,
 	 char *        outDesc)
  {
-
 	 // Plugin Info
 	 strcpy(outName, "Avitab_FF_A350");
 	 strcpy(outSig, "itxd.integrations.ffa350Avitab");
 	 strcpy(outDesc, "Avitab Integration for FF A350");
-
-   //	     sensorTempRef = XPLMRegisterDataAccessor("realSensor/temp_c",
-		 //xplmType_Float,                                  // The types we support
-		 //1,                                             // Writable
-		 //NULL, NULL,      // Integer accessors
-		 //getSensorVal, setSensorVal,          // Float accessors
-		 //NULL, NULL,                                    // Doubles accessors
-		 //NULL, NULL,                                    // Int array accessors
-		 //NULL, NULL,                                    // Float array accessors
-		 //NULL, NULL,                                    // Raw data accessors
-		 //NULL, NULL);                                   // Refcons not used
-
-	 
 
 // Find and intialize our  dataref
 	 avitab_enable = XPLMFindDataRef("avitab/panel_enabled");
@@ -72,11 +67,13 @@ float  AvitabControl(float elapsedMe, float elapsedSim, int counter, void * refc
 	 dummyDisplay = XPLMFindDataRef("1-sim/lights/dummyScreen");
 	 busVolts1 = XPLMFindDataRef("sim/cockpit2/electrical/bus_volts[0]");
 
-	 //register the callback
-	 //XPLMRegisterFlightLoopCallback(RegDataRefInDRE, 1, NULL);   // This FLCB will register our custom dataref in DRE
-	 //XPLMPluginID PluginID = XPLMFindPluginBySignature("xplanesdk.examples.DataRefEditor");
+	 XPLMSetDatai(avitab_enable, enabled);
+	 XPLMSetDatai(ois_cursor, cursor);
+	 XPLMSetDataf(avitab_pos_left, left_side);
+	 XPLMSetDataf(avitab_pos_bottom, bottom_side);
 
-	 XPLMRegisterFlightLoopCallback(AvitabControl, 1, NULL);  //Flight Loop Call Back Register
+	 //register the callback
+	 XPLMRegisterFlightLoopCallback(MyFlightLoopCallBack, -1, NULL);  //Flight Loop Call Back Register
 
 	 return 1;
  }
@@ -84,8 +81,7 @@ float  AvitabControl(float elapsedMe, float elapsedSim, int counter, void * refc
   
  PLUGIN_API void     XPluginStop(void)
  { 
-	 //XPLMUnregisterDataAccessor(sensorTempRef);
-	 XPLMUnregisterFlightLoopCallback(AvitabControl, NULL);	 //  Don't forget to unload this callback.  
+	 XPLMUnregisterFlightLoopCallback(MyFlightLoopCallBack, NULL);	 //  Don't forget to unload this callback.  
  }
   
  PLUGIN_API void XPluginDisable(void)
@@ -101,84 +97,44 @@ float  AvitabControl(float elapsedMe, float elapsedSim, int counter, void * refc
                                       long             inMessage,
                                       void *           inParam)
  {
+
  }
  
- float  AvitabControl(float elapsedMe, float elapsedSim, int counter, void* refcon)
+ float  MyFlightLoopCallBack(						//our flight loop callback
+							 float elapsedMe,
+							 float elapsedSim,
+							 int counter,
+							 void* refcon)
  {
-	 int oisPosition		= XPLMGetDatai(ois_position);
-	 int oisPage			= XPLMGetDatai(ois_page);
-	 float bus1Volts		= XPLMGetDataf(busVolts1);
-	 float dummyScr			= XPLMGetDataf(dummyDisplay);
+	 int oisPosition = XPLMGetDatai(ois_position);
+	 int oisPage = XPLMGetDatai(ois_page);
+	 float dummyScr = XPLMGetDataf(dummyDisplay);
 
-	 if (oisPosition == 0)
+	 if (oisPosition == 0 && oisPage == 5 && dummyScr > 0.0f)
 	 {
-		 if (oisPage == 5)
-		 {
-			 if (dummyScr == 1)
-			 {
-				 XPLMSetDatai(avitab_enable, 1);
-				 XPLMSetDatai(ois_cursor, 0);
-			 }
-			 else
-			 {
-				 XPLMSetDatai(avitab_enable, 0);
-				 XPLMSetDatai(ois_cursor, 1);
-			 }
-		 }
-		 else
-		 {
-			 XPLMSetDatai(avitab_enable, 0);
-			 XPLMSetDatai(ois_cursor, 1);
-		 }
-
-		 XPLMSetDataf(avitab_pos_left, 75);
-		 XPLMSetDataf(avitab_pos_bottom, -20);
+		enabled = 1;
+		cursor = 0;
+		left_side = 75;
+		bottom_side = -20;
+	 }
+	 else if (oisPosition == 1 && oisPage == 5 && dummyScr > 0.0f)
+	 {
+		 enabled = 1;
+		 cursor = 0;
+		 left_side = 75;
+		 bottom_side = 620;
 	 }
 	 else
 	 {
-		 if (oisPage == 5)
-		 {
-			 if (dummyScr == 1)
-			 {
-				 XPLMSetDatai(avitab_enable, 1);
-				 XPLMSetDatai(ois_cursor, 0);
-			 }
-			 else
-			 {
-				 XPLMSetDatai(avitab_enable, 0);
-				 XPLMSetDatai(ois_cursor, 1);
-			 }
-		 }
-		 XPLMSetDataf(avitab_pos_left, 75);
-		 XPLMSetDataf(avitab_pos_bottom, 620);
+		 enabled = 1;
+		 cursor = 0;
 	 }
 
-	 return 1.0;
+
+	/* XPLMSetDatai(avitab_enable, enabled);
+	 XPLMSetDatai(ois_cursor, cursor);
+	 XPLMSetDataf(avitab_pos_left, left_side);
+	 XPLMSetDataf(avitab_pos_bottom, bottom_side);*/
+
+	 return 0.001; //time to run our code in seconds
  }
-
- //float     getSensorVal(void* inRefcon)
- //{
- //    return sensorTemp;
- //}
- //
- //void	setSensorVal(void* inRefcon, float inValue)
- //{
- //     sensorTemp = inValue;
- //}
-
-
- 
- 
- //  This single shot FLCB registers our custom dataref in DRE
- //float RegDataRefInDRE(float elapsedMe, float elapsedSim, int counter, void * refcon)
- //{
-	// float idealTempVal = XPLMGetDataf(idealTempRef);
-	// float tempT = (idealTempVal + randomizer(-TEMP_NOISE_AMP * idealTempVal, TEMP_NOISE_AMP*idealTempVal));
-	// XPLMSetDataf(sensorTempRef, tempT);
- //    return 1;    
- //}
-
-
- //float randomizer(float LO, float HI) {
-	// return LO + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (HI - LO)));
- //}
