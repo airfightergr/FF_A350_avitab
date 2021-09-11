@@ -37,15 +37,15 @@ PLUGIN_API int XPluginStart(
 	strcpy(outDesc, "Avitab integration to Fight Factor A350");
 
 	avitab_panel_enable 	= XPLMFindDataRef("avitab/panel_enabled");
-	avitab_pos_left				= XPLMFindDataRef("avitab/panel_left");
-	avitab_pos_bottom			= XPLMFindDataRef("avitab/panel_bottom");
-	avitab_width					= XPLMFindDataRef("avitab/panel_width");
-	avitab_height					= XPLMFindDataRef("avitab/panel_height");
-	FFA350_ois_page				= XPLMFindDataRef("1-sim/ois/guage");
-	FFA350_ois_position		= XPLMFindDataRef("1-sim/misc/oisCycle");
-	FFA350_ois_cursor			= XPLMFindDataRef("1-sim/options/displayCursor");
-	bus1_volts						= XPLMFindDataRef("sim/cockpit2/electrical/bus_volts[0]");
-	dummy_display					= XPLMFindDataRef("1-sim/lights/dummyScreen");
+	avitab_pos_left		= XPLMFindDataRef("avitab/panel_left");
+	avitab_pos_bottom	= XPLMFindDataRef("avitab/panel_bottom");
+	avitab_width		= XPLMFindDataRef("avitab/panel_width");
+	avitab_height		= XPLMFindDataRef("avitab/panel_height");
+	FFA350_ois_page		= XPLMFindDataRef("1-sim/ois/guage");
+	FFA350_ois_position	= XPLMFindDataRef("1-sim/misc/oisCycle");
+	FFA350_ois_cursor	= XPLMFindDataRef("1-sim/options/displayCursor");
+	bus1_volts		= XPLMFindDataRef("sim/cockpit2/electrical/bus_volts[0]");
+	dummy_display		= XPLMFindDataRef("1-sim/lights/dummyScreen");
 	// 
 	// XPLMSetDatai(avitab_panel_enable, 0);
 	// XPLMSetDatai(FFA350_ois_cursor, 1);
@@ -55,7 +55,6 @@ PLUGIN_API int XPluginStart(
 
 //create and register our function to run on flight loop
 XPLMRegisterFlightLoopCallback(MyFlightLoopCallBack, 1.0, NULL);
-//XPLMSetFlightLoopCallbackInterval(AvitabShow, 0.01, 1, NULL);
 
 	return 1;
 }
