@@ -5,7 +5,7 @@
 This download contains the files necessary to build plugins for X-Plane.  The 
 X-Plane plugin website is:
 
-http://https://developer.x-plane.com/sdk/
+https://developer.x-plane.com/sdk/
 
 The website contains full documentation on the SDK including tech notes, sample
 plugins, sample code, contact information, and links to the latest versions of

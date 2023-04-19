@@ -1,6 +1,7 @@
 BUILDDIR	:= ./
-SRC_BASE	:=	.
+SRC_BASE	:= .
 TARGET		:= lin_x64
+TARGET2		:= win_x64
 
 SOURCES = \
 	main.cpp

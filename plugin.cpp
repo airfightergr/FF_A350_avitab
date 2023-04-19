@@ -61,25 +61,22 @@ XPLMRegisterFlightLoopCallback(MyFlightLoopCallBack, 1.0, NULL);
 
 PLUGIN_API int XPluginEnable(void)
 {
-	return 1.0;
+	return 1;
 }
 
-float MyFlightLoopCallBack(float elapsedMe, float elapsedSim, int counter, void * refcon)
-
+float MyFlightLoopCallBack(	float elapsedMe, 
+							float elapsedSim, 
+							int counter, 
+							void * refcon)
 {
-int oisPos;
-int oisPage;
-float busV;
-int dummyDis;
-
-oisPos 		= XPLMGetDatai(FFA350_ois_position);
-oisPage	 	= XPLMGetDatai(FFA350_ois_page);
-dummyDis	= XPLMGetDataf(dummy_display);
+int oisPos 		= XPLMGetDatai(FFA350_ois_position);
+int oisPage	 	= XPLMGetDatai(FFA350_ois_page);
+int dummyDis	= XPLMGetDataf(dummy_display);
 
 float busV_values[8];
-busV			= XPLMGetDatavf(bus1_volts, busV_values, 0, 1);
+float busV			= XPLMGetDatavf(bus1_volts, busV_values, 0, 1);
 
-	if (oisPage == 5)
+	if (FFA350_ois_page == 5)
 	{
 		XPLMSetDatai(avitab_panel_enable, 1);
 		XPLMSetDatai(FFA350_ois_cursor, 0);
@@ -91,7 +88,7 @@ else
 	}
 
 	//Position
-	if (oisPos == 0)
+	if (FFA350_ois_page == 0)
 	{
 		XPLMSetDatai(avitab_pos_left, 75);
 		XPLMSetDatai(avitab_pos_bottom, -20);
