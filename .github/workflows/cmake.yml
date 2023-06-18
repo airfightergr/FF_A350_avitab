@@ -81,7 +81,7 @@ jobs:
         with:
           name: ffa350_avitab
           path: |
-            ${{github.workspace}}/ffa350_avitab*
+            ffa350_avitab*
           if-no-files-found: error
 
       - name: Create plugin archive
