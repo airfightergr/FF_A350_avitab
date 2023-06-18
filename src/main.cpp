@@ -27,6 +27,7 @@ version 1.0
  XPLMDataRef avitab_pos_bottom = NULL;			// avitab bottom pos
  XPLMDataRef avitab_width = NULL;					// avitab width
  XPLMDataRef avitab_height = NULL;				// avitab height
+ XPLMDataRef avitab_brit = NULL;
 
 //FF A350 OIS datarefs init
 static XPLMDataRef ois_page = NULL;						// OIS page number
@@ -63,6 +64,7 @@ float  AvitabEnable( float elapsedMe, float elapsedSim, int counter, void* Refco
 	 return 0.1f; //time to run our code in seconds
  }
 
+
  float AvitabPosition( float elapsedMe, float elapsedSim, int counter, void* Refcon ) //our flight loop callback)
  {
 // set avitab position based on OIS position
@@ -75,17 +77,27 @@ float  AvitabEnable( float elapsedMe, float elapsedSim, int counter, void* Refco
 	{	
 		XPLMSetDatai(avitab_pos_left, 75);
 		XPLMSetDatai(avitab_pos_bottom, -20);
-		XPLMDebugString("[ILIAS]: Ois pos = 0 and Page = 5\n");
 	}
 	else if (oisPs == 1)
 	{
 		XPLMSetDatai(avitab_pos_left, 75);
 		XPLMSetDatai(avitab_pos_bottom, 620);
-		XPLMDebugString("[ILIAS]: Ois pos = 1 and Page = 5\n");
 	}
- 	
+
 	return 0.1f; //time to run our code in seconds
  }
+
+
+float AvitabBrit( float elapsedMe, float elapsedSim, int counter, void* Refcon ) //our flight loop callback)
+{
+// control brightness
+	dummyDisplay = XPLMFindDataRef("1-sim/lights/dummyScreen");
+	avitab_brit = XPLMFindDataRef("avitab/brightness");
+
+	XPLMSetDataf(avitab_brit, XPLMGetDataf(dummyDisplay));
+ 	
+	return 0.1f; //time to run our code in seconds
+}
 
 // int     getOisPos(void* inRefcon);
 // int     getOisPage(void* inRefcon);
@@ -94,8 +106,6 @@ float  AvitabEnable( float elapsedMe, float elapsedSim, int counter, void* Refco
 // void    setOisPos(void* inRefcon, int outValue);
 // void    setAvitabLeftPos(void* inRefcon, int outValue);
 // void    setAvitabBottomPos(void* inRefcon, int outValue);
-
-char buf[1024];
 
  PLUGIN_API int XPluginStart(
 	 char *        outName,
@@ -133,6 +143,7 @@ char buf[1024];
 //register the callback
 	XPLMRegisterFlightLoopCallback(AvitabEnable, -1, NULL);  //Flight Loop Call Back Register
  	XPLMRegisterFlightLoopCallback(AvitabPosition, -1, NULL);  //Flight Loop Call Back Register
+	XPLMRegisterFlightLoopCallback(AvitabBrit, -1, NULL);  //Flight Loop Call Back Register
 	 return 1;
  }
 
