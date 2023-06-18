@@ -1,5 +1,3 @@
-# Hello World SDK 3 build script. Adapted for my Avanti.
-#
 # Useful command line flags:
 #   * -DCMAKE_BUILD_TYPE=XXX, where XXX is one of Debug, Release,
 #     RelWithDebInfo and MinSizeRel. Default is Release.
@@ -129,14 +127,18 @@ elseif (UNIX)
     target_link_libraries(plugin -Wl,--version-script -Wl,${CMAKE_SOURCE_DIR}/exports.txt)
 endif ()
 
-
 set_target_properties(plugin PROPERTIES PREFIX "")
 set_target_properties(plugin PROPERTIES OUTPUT_NAME "ffa350_avitab")
+set_target_properties(plugin PROPERTIES SUFFIX ".xpl")
+
 if (WIN32)
     set_target_properties(plugin PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/win_x64")
+    set_target_properties(plugin PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/win_x64")
 elseif (APPLE)
     set_target_properties(plugin PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/mac_x64")
+    set_target_properties(plugin PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/mac_x64")
 elseif (UNIX)
     set_target_properties(plugin PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lin_x64")
+    set_target_properties(plugin PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lin_x64")
 endif ()
-set_target_properties(plugin PROPERTIES SUFFIX ".xpl")
+
