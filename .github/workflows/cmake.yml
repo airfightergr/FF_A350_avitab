@@ -62,7 +62,7 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: binaries
-        path: ${{github.workspace}}/ffa350_avitab/*
+        path: ${{github.workspace}}/build/*.xpl
         if-no-files-found: error
 
   package:
@@ -81,7 +81,7 @@ jobs:
         with:
           name: ffa350_avitab
           path: |
-            ffa350_avitab*
+            ${{github.workspace}}/ffa350_avitab*
           if-no-files-found: error
 
       - name: Create plugin archive
