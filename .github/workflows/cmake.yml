@@ -62,7 +62,7 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: binaries
-        path: ${{github.workspace}}/build/*.xpl
+        path: ${{github.workspace}}/ffa350_avitab/*
         if-no-files-found: error
 
   package:
