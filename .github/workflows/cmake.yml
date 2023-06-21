@@ -70,12 +70,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: actions/download-artifact@v3
         with:
           name: binaries
           path: ffa350_avitab/lin_x64
+      - name: Test artifact download
+        run: ls -R -l
+      - name: Rename lin.xpl to ffa350_avitab.xpl
+        run: mv ffa350_avitab/lin_x64/lin.xpl ffa350_avitab/lin_x64/ffa350_avitab.xpl
+      - name: List folder
+        run: ls -R -l
+      - name: Rename win.xpl to ffa350_avitab/win_x64/ffa350_avitab.xpl
+        run: mv ffa350_avitab/lin_x64/win.xpl ffa350_avitab/win_x64/ffa350_avitab.xpl
+      - name: Rename mac.xpl to ffa350_avitab/mac_x64/ffa350_avitab.xpl
+        run: mv ffa350_avitab/lin_x64/mac.xpl ffa350_avitab/mac_x64/ffa350_avitab.xpl
+      - name: List Final folder
+        run: ls -R -l
 
       - uses: actions/upload-artifact@v3
         with:
@@ -96,5 +108,4 @@ jobs:
           file: ffa350_avitab.zip
           tag: ${{ github.ref }}
           overwrite: true
-
 #
