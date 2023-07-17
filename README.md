@@ -12,6 +12,10 @@ Download the plugin from [**Releases**](https://github.com/airfightergr/FF_A350_
 
 Select from the OIS select menu the **Charts** page, and Avitab will show. If you switch OIS display, the Avitab will also be available that the other display.
 
+## Issues
+
+If you have any issues, please add them [here](https://github.com/airfightergr/FF_A350_avitab/issues).
+
 ### Mac users
 
 Arm architecture is not supported yet, but will be added as soon as this is possible.
