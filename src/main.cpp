@@ -4,22 +4,13 @@ ITX-D Avitab integration for FF A350
 Ilias Tselios
 version 1.0
 ************************************************ */
- 
-#define XPLM400 = 1;  // This example requires SDK4.0
 
 #include <cstring>
 #include <cstddef>
-#include <cstdio>
 #include <XPLMPlugin.h>
-#include <XPLMDisplay.h>
-#include <XPLMGraphics.h>
 #include <XPLMProcessing.h>
 #include <XPLMDataAccess.h>
-#include <XPLMMenus.h>
-#include <XPLMUtilities.h>
-#include <XPWidgets.h>
-#include <XPStandardWidgets.h>
-#include <XPLMScenery.h>
+
 
 //Avitab datarefs init
  XPLMDataRef avitab_enable = NULL;				// avitab is enabled?
@@ -41,7 +32,7 @@ static XPLMDataRef busVolts1 = NULL;					// OIS cursor type
 float left_side, bottom_side, dummyScr;
 int enabled, oisPosition, cursor, oisPage, oisCur;
 
-int oisP, oisPs;
+//int oisP, oisPs;
 
 float  AvitabEnable( float elapsedMe, float elapsedSim, int counter, void* Refcon ) //our flight loop callback
 {
@@ -99,13 +90,6 @@ float AvitabBrit( float elapsedMe, float elapsedSim, int counter, void* Refcon )
 	return 0.1f; //time to run our code in seconds
 }
 
-// int     getOisPos(void* inRefcon);
-// int     getOisPage(void* inRefcon);
-// float   getdummySrc(void* inRefcon);
-
-// void    setOisPos(void* inRefcon, int outValue);
-// void    setAvitabLeftPos(void* inRefcon, int outValue);
-// void    setAvitabBottomPos(void* inRefcon, int outValue);
 
  PLUGIN_API int XPluginStart(
 	 char *        outName,
@@ -135,10 +119,6 @@ float AvitabBrit( float elapsedMe, float elapsedSim, int counter, void* Refcon )
      dummyScr = XPLMGetDataf(dummyDisplay);
      oisCur = XPLMGetDatai(ois_cursor);
 
-	 //XPLMSetDatai(avitab_enable, enabled);
-	 //XPLMSetDatai(ois_cursor, cursor);
-	 //XPLMSetDataf(avitab_pos_left, left_side);
-	 //XPLMSetDataf(avitab_pos_bottom, bottom_side);
 
 //register the callback
 	XPLMRegisterFlightLoopCallback(AvitabEnable, -1, NULL);  //Flight Loop Call Back Register
